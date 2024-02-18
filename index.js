@@ -9,9 +9,9 @@ let request_type = {
     'delivery': 'param2/1/com.alibaba.logistics/'
 };
 
-base_url = 'https://gw.open.1688.com/openapi/';
+let base_url = 'https://gw.open.1688.com/openapi/';
 
-
+let orderMap = {}
 
 
 function DoProcess() {
@@ -72,12 +72,26 @@ function GetTradeData(data, shopName) {
                 }
             })
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(data => MapOrderId(data))
             .catch(error => console.error('post error', error));
         }, 200);
     } catch (error) {
         console.error('post error', error);
     }
+}
+
+function MapOrderId(data){
+    orderList = data.result;
+    console.log(typeof(orderList));
+    console.log(orderList);
+
+    orderList.forEach((order) => {
+        if(!orderMap.hasOwnProperty(order['baseInfo']['idOfStr'])){
+            orderMap[order['baseInfo']['idOfStr']] = "";
+        }
+    })
+
+    console.log(orderMap);
 }
 
 function CalculateSignature(urlPath, data, shopName) {
