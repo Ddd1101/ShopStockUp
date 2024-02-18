@@ -12,7 +12,10 @@ let request_type = {
 base_url = 'https://gw.open.1688.com/openapi/';
 
 
+
+
 function DoProcess() {
+    // 1. 获取订单id并存储
     GetOrderList();
 }
 
@@ -23,9 +26,6 @@ function GetOrderList() {
     var startMonth = (today.getMonth() + 1).toString().padStart(2, '0');
     var startDay = today.getDate().toString().padStart(2, '0');
     var startTime = startYear + startMonth + startDay + '000000000+0800'
-    
-    // var inputText = document.getElementById('userInput').value;
-    // alert('You entered 222: ' + inputText);
 
     today = new Date();
     today.setDate(today.getDate() + 0);
@@ -33,7 +33,6 @@ function GetOrderList() {
     var endMonth = (today.getMonth() + 1).toString().padStart(2, '0');
     var endDay = today.getDate().toString().padStart(2, '0');
     var endTime = endYear + endMonth + endDay + '000000000+0800'
-    // alert('Formatted Date: ' + endTime );
 
     let orderstatus = 'waitbuyerreceive';
 
@@ -41,8 +40,6 @@ function GetOrderList() {
 
     let  orderListRaw = [];
 
-
-    console.log("here");
 
     shopNameList.forEach((shopName) => {
         const data = {
@@ -52,31 +49,18 @@ function GetOrderList() {
             'needMemoInfo': 'true'
         };
 
-        console.log(11111);
-
-        console.log(data['createStartTime']);
-
         response = GetTradeData(data, shopName);
     });
 }
 
 
 function GetTradeData(data, shopName) {
-    console.log("here");
     data['access_token'] = access_token[shopName];
     const _aop_signature = CalculateSignature(request_type['trade'] + "alibaba.trade.getSellerOrderList/" + AppKey[shopName], data, shopName);
     data['_aop_signature'] = _aop_signature;
 
-    console.log(data);
-
-    console.log(JSON.stringify(data));
-
     let params = new URLSearchParams(data).toString();
-    let formData = new FormData();
-    for (let key in data) {
-        formData.append(key, data[key]);
-    }
-    console.log(formData);
+
     const url = base_url + request_type['trade'] + "alibaba.trade.getSellerOrderList/" + AppKey[shopName];
     try {
         setTimeout(() => {
@@ -106,17 +90,8 @@ function CalculateSignature(urlPath, data, shopName) {
 
     // 合并签名因子
     let mergedParams = urlPath + assembedParams;
-    // mergedParams = Buffer.from(mergedParams, 'utf8');
 
     // 执行hmac_sha1算法 && 转为16进制
-    // const crypto = require("crypto");
-    // const hmac = crypto.createHmac('sha1', AppSecret[shopName]);
-    // hmac.update(mergedParams);
-    // let hex_res1 = hmac.digest('hex');
-
-
-    console.log(mergedParams);
-
     let hex_res1 = CryptoJS.HmacSHA1(mergedParams, AppSecret[shopName]);
 
 
@@ -124,8 +99,6 @@ function CalculateSignature(urlPath, data, shopName) {
 
     // 转为全大写字符
     hex_res1_str = hex_res1_str.toUpperCase();
-
-    console.log(hex_res1_str);
 
     return hex_res1_str;
 }
