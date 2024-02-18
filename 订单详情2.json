@@ -1,0 +1,207 @@
+{
+    "result": {
+      "baseInfo": {
+        "alipayTradeId": "2024021722001813291408658078",
+        "allDeliveredTime": "20240217165946000+0800",
+        "businessType": "cb",
+        "buyerAlipayId": "2088441523713299",
+        "buyerContact": {
+          "companyName": "全球速卖通",
+          "imInPlatform": "s*",
+          "mobile": "19357228503",
+          "name": "雷东明",
+          "phone": ""
+        },
+        "buyerFeedback": "请在支付完成后的2日内完成发货",
+        "buyerLevel": "L6",
+        "buyerLoginId": "s*",
+        "buyerOpenUid": "BBBJp-MzRyZZDDo68BwPYdeXA",
+        "closeOperateType": "",
+        "couponFee": 0,
+        "createTime": "20240217125210000+0800",
+        "discount": 0,
+        "flowTemplateCode": "assureTrade",
+        "id": 3780061166378232333,
+        "idOfStr": "3780061166378232333",
+        "modifyTime": "20240218140534000+0800",
+        "newStepOrderList": [
+          {
+            "activeStatus": 1,
+            "adjustFee": 0,
+            "discountFee": 0,
+            "gmtPay": "20240217125306000+0800",
+            "gmtStart": "20240217125210000+0800",
+            "lastStep": true,
+            "logisticsStatus": 2,
+            "paidFee": 12.9,
+            "paidPostFee": 0,
+            "payFee": 12.9,
+            "payStatus": 2,
+            "postFee": 0,
+            "stepName": "全款交易",
+            "stepNo": 1
+          }
+        ],
+        "overSeaOrder": false,
+        "payChannelCodeList": [
+          "kjpayV2"
+        ],
+        "payChannelList": [
+          "跨境宝2.0"
+        ],
+        "payTime": "20240217125306000+0800",
+        "receiverInfo": {
+          "toArea": "浙江省 杭州市 萧山区 浙江省杭州市钱塘区临江街道纬二路88号乐歌物流园二楼，收货月台：5-1",
+          "toDivisionCode": "330109",
+          "toFullName": "郑咏",
+          "toMobile": "18661241525",
+          "toPost": "311201"
+        },
+        "refund": 0,
+        "refundPayment": 0,
+        "remark": "请在支付完成后的2日内完成发货",
+        "sellerAlipayId": "2088312897948166",
+        "sellerContact": {
+          "companyName": "苍南县联球制衣厂",
+          "imInPlatform": "联*",
+          "name": "童丽阳",
+          "phone": ""
+        },
+        "sellerLoginId": "联*",
+        "sellerOrder": false,
+        "shippingFee": 0,
+        "status": "waitbuyerreceive",
+        "stepPayAll": false,
+        "sumProductPayment": 12.9,
+        "totalAmount": 12.9,
+        "tradeType": "50060",
+        "tradeTypeCode": "fxassure",
+        "tradeTypeDesc": "4.0担保交易"
+      },
+      "extAttributes": [],
+      "fromEncryptOrder": false,
+      "nativeLogistics": {
+        "address": "浙江省杭州市钱塘区临江街道纬二路88号乐歌物流园二楼，收货月台：5-1",
+        "area": "萧山区",
+        "areaCode": "330109",
+        "city": "杭州市",
+        "contactPerson": "郑咏",
+        "logisticsItems": [
+          {
+            "deliveredTime": "20240217165946000+0800",
+            "fromAddress": "钱库镇 小云兜225号",
+            "fromArea": "苍南县",
+            "fromCity": "温州市",
+            "fromPhone": "",
+            "fromPost": "000000",
+            "gmtCreate": "20240217165945000+0800",
+            "gmtModified": "20240217165946000+0800",
+            "id": 193666768811685,
+            "logisticsBillNo": "JT3064364547332",
+            "logisticsCode": "LP00630749782449",
+            "logisticsCompanyId": 352,
+            "logisticsCompanyName": "极兔速递-原百世快递",
+            "logisticsCompanyNo": "HTKY",
+            "noLogisticsBillNo": "",
+            "noLogisticsCondition": "-1",
+            "noLogisticsName": "",
+            "noLogisticsTel": "",
+            "status": "alreadysend",
+            "subItemIds": "3780061166378232333",
+            "toAddress": "浙江省杭州市钱塘区临江街道纬二路88号乐歌物流园二楼，收货月台：5-1",
+            "toArea": "萧山区",
+            "toCity": "杭州市",
+            "toPost": "311201",
+            "type": "0"
+          }
+        ],
+        "mobile": "18661241525",
+        "province": "浙江省",
+        "zip": "311201"
+      },
+      "officialLogisticOrder": false,
+      "orderBizInfo": {
+        "creditOrder": false,
+        "isCz": false,
+        "odsCyd": false
+      },
+      "orderRateInfo": {
+        "buyerRateStatus": 5,
+        "sellerRateStatus": 5
+      },
+      "productItems": [
+        {
+          "actualPaidFee": 1290,
+          "bMss": "1",
+          "crossPromotionFee": 0,
+          "entryDiscount": 0,
+          "gmtCreate": "20240217125210000+0800",
+          "gmtModified": "20240218140534000+0800",
+          "guaranteesTerms": [
+            {
+              "assuranceInfo": "卖家在承诺买家保障服务的基础上，向买家提供“24小时发货延必赔”的服务。在买家通过支付宝担保交易完成付款或通过货到付款下单成功后，卖家承诺在买家支付成功起24小时内发货。如卖家未履行前述承诺，买家可在指定期限内发起维权，并申请赔付。",
+              "assuranceType": "essxsfh",
+              "qualityAssuranceType": "24小时发货",
+              "shortCode": "C"
+            },
+            {
+              "shortCode": "C_2"
+            },
+            {
+              "shortCode": "EOT"
+            }
+          ],
+          "itemAmount": 12.9,
+          "itemDiscountFee": 0,
+          "logisticsStatus": 2,
+          "name": "童裤儿童秋冬加绒加厚秋裤宝宝防风束脚保暖裤男女童卡通单裤睡裤",
+          "orderSharedPromotionFee": 0,
+          "price": 12.9,
+          "productCargoNumber": "L90021",
+          "productID": 684732295302,
+          "productImgUrl": [
+            "http://cbu01.alicdn.com/img/ibank/O1CN01w6QCNt1Bs2tdWSnvY_!!0-0-cib.80x80.jpg",
+            "http://cbu01.alicdn.com/img/ibank/O1CN01w6QCNt1Bs2tdWSnvY_!!0-0-cib.jpg"
+          ],
+          "productSnapshotUrl": "https://trade.1688.com/order/offer_snapshot.htm?order_entry_id=3780061166378232333",
+          "promotionsFee": 0,
+          "quantity": 1,
+          "quantityFactor": 1,
+          "refund": 0,
+          "skuID": 5061768102274,
+          "skuInfos": [
+            {
+              "name": "颜色",
+              "value": "CX-N 粉色兔子"
+            },
+            {
+              "name": "适合身高",
+              "value": "110cm"
+            }
+          ],
+          "specId": "907ea048893982a707c851c3afe8b33c",
+          "status": "waitbuyerreceive",
+          "statusStr": "等待买家收货",
+          "subItemID": 3780061166378232333,
+          "subItemIDString": "3780061166378232333",
+          "tbId": 3780061166378232333,
+          "type": "common",
+          "unit": "件"
+        }
+      ],
+      "tradeTerms": [
+        {
+          "cardPay": false,
+          "expressPay": false,
+          "payStatus": "2",
+          "payStatusDesc": "已付款",
+          "payTime": "20240217125306000+0800",
+          "payWay": "13",
+          "payWayDesc": "支付平台",
+          "phasAmount": 12.9,
+          "phase": 69157656680232333
+        }
+      ]
+    },
+    "success": "true"
+  }
