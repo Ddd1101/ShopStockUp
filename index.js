@@ -11,10 +11,15 @@ let request_type = {
 
 let base_url = 'https://gw.open.1688.com/openapi/';
 
-let orderMap = {}
+let orderMap = {
+    '联球制衣厂':{}
+}
 
 
 function DoProcess() {
+    // 0. 存储待查单号
+    let inputText = document.getElementById('userInput').value;
+    alert('You entered: ' + inputText);
     // 1. 获取订单id并存储
     GetOrderList();
 }
@@ -49,12 +54,12 @@ function GetOrderList() {
             'needMemoInfo': 'true'
         };
 
-        response = GetTradeData(data, shopName);
+        response = GetTradeList(data, shopName);
     });
 }
 
 
-function GetTradeData(data, shopName) {
+function GetTradeList(data, shopName) {
     data['access_token'] = access_token[shopName];
     const _aop_signature = CalculateSignature(request_type['trade'] + "alibaba.trade.getSellerOrderList/" + AppKey[shopName], data, shopName);
     data['_aop_signature'] = _aop_signature;
@@ -72,7 +77,7 @@ function GetTradeData(data, shopName) {
                 }
             })
             .then(response => response.json())
-            .then(data => MapOrderId(data))
+            .then(data => MapOrderId(data, shopName))
             .catch(error => console.error('post error', error));
         }, 200);
     } catch (error) {
@@ -80,18 +85,69 @@ function GetTradeData(data, shopName) {
     }
 }
 
-function MapOrderId(data){
+function MapOrderId(data, shopName){
     orderList = data.result;
     console.log(typeof(orderList));
     console.log(orderList);
 
     orderList.forEach((order) => {
-        if(!orderMap.hasOwnProperty(order['baseInfo']['idOfStr'])){
-            orderMap[order['baseInfo']['idOfStr']] = "";
+        if(!orderMap[shopName].hasOwnProperty(order['baseInfo']['idOfStr'])){
+            let _orderId = order['baseInfo']['idOfStr'];
+            orderMap[shopName][_orderId] = [];
+            GetTradeData(_orderId, shopName);
         }
     })
 
     console.log(orderMap);
+}
+
+function GetTradeData(orderId, shopName){
+    const data = {
+        'orderId': String(orderId)
+    };
+
+    data['access_token'] = access_token[shopName];
+    const _aop_signature = CalculateSignature(request_type['trade'] + "alibaba.trade.get.sellerView/" + AppKey[shopName], data, shopName);
+    data['_aop_signature'] = _aop_signature;
+
+    let params = new URLSearchParams(data).toString();
+
+    console.log(params);
+
+    const url = base_url + request_type['trade'] + "alibaba.trade.get.sellerView/" + AppKey[shopName];
+
+    console.log(url);
+
+    try {
+        setTimeout(() => {
+            fetch(url, {
+                method: 'POST',
+                body: params,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .then(response => response.json())
+            .then(data => MaplogisticsBillNo(shopName, orderId, data))
+            .catch(error => console.error('post error', error));
+        }, 200);
+    } catch (error) {
+        console.error('post error', error);
+    }
+}
+
+function MaplogisticsBillNo(shopName, orderId, data){
+    console.log(data);
+    let logisticsItems = data['result']['nativeLogistics']['logisticsItems'];
+    logisticsItems.forEach((logisticsItem) => {
+        let logisticsBillNo = logisticsItem['logisticsBillNo']
+        if (!orderMap[shopName][orderId].includes(logisticsBillNo)) {
+            orderMap[shopName][orderId].push(logisticsBillNo);
+        }
+    });
+    
+    console.log(orderMap);
+    
 }
 
 function CalculateSignature(urlPath, data, shopName) {
