@@ -12,28 +12,62 @@ let request_type = {
 let base_url = 'https://gw.open.1688.com/openapi/';
 
 let orderMap = {
-    '联球制衣厂':{}
+    '联球制衣厂':{},
+    '朝雄制衣厂':{}
+}
+
+let gLogisticsBillNo = "";
+
+function FindInMap() {
+    gLogisticsBillNo = document.getElementById('logisticsBillNo').value;
+    let isFind = false;
+
+    for (let shopName in orderMap) {
+        let orderList = orderMap[shopName];
+        for (let order in orderList) {
+            let logisticsBillNoList = orderList[order]['logistics'];
+            for (let logisticsBillNo of logisticsBillNoList) {
+                if (String(logisticsBillNo) == String(gLogisticsBillNo)) {
+                    isFind = true;
+                    Show(orderList[order]['data']);
+
+                    document.getElementById('orderId').innerHTML = order;
+                }
+
+                if(isFind){
+                    break;
+                }
+            }
+            if(isFind){
+                break;
+            }
+        }
+        if(isFind){
+            break;
+        }
+    }
+
+    if(!isFind){
+        DoProcess();
+    }
 }
 
 
 function DoProcess() {
-    // 0. 存储待查单号
-    let inputText = document.getElementById('userInput').value;
-    alert('You entered: ' + inputText);
     // 1. 获取订单id & 获取对应的物流单号 & 存储
     GetOrderList();
 }
 
 function GetOrderList() {
     var today = new Date();
-    today.setDate(today.getDate() - 2);
+    today.setDate(today.getDate() - 3);
     var startYear = today.getFullYear();
     var startMonth = (today.getMonth() + 1).toString().padStart(2, '0');
     var startDay = today.getDate().toString().padStart(2, '0');
     var startTime = startYear + startMonth + startDay + '000000000+0800'
 
     today = new Date();
-    today.setDate(today.getDate() + 0);
+    today.setDate(today.getDate() + 1);
     var endYear = today.getFullYear();
     var endMonth = (today.getMonth() + 1).toString().padStart(2, '0');
     var endDay = today.getDate().toString().padStart(2, '0');
@@ -41,7 +75,7 @@ function GetOrderList() {
 
     let orderstatus = 'waitbuyerreceive';
 
-    let shopNameList = ['联球制衣厂'];
+    let shopNameList = ['联球制衣厂', '朝雄制衣厂'];
 
     let  orderListRaw = [];
 
@@ -87,13 +121,11 @@ function GetTradeList(data, shopName) {
 
 function MapOrderId(data, shopName){
     orderList = data.result;
-    console.log(typeof(orderList));
-    console.log(orderList);
 
     orderList.forEach((order) => {
         if(!orderMap[shopName].hasOwnProperty(order['baseInfo']['idOfStr'])){
             let _orderId = order['baseInfo']['idOfStr'];
-            orderMap[shopName][_orderId] = {"logistics":[]};
+            orderMap[shopName][_orderId] = {'logistics':[]};
             GetTradeData(_orderId, shopName);
         }
     })
@@ -116,8 +148,6 @@ function GetTradeData(orderId, shopName){
 
     const url = base_url + request_type['trade'] + "alibaba.trade.get.sellerView/" + AppKey[shopName];
 
-    console.log(url);
-
     try {
         setTimeout(() => {
             fetch(url, {
@@ -128,7 +158,7 @@ function GetTradeData(orderId, shopName){
                 }
             })
             .then(response => response.json())
-            .then(data => MaplogisticsBillNo(shopName, orderId, data))
+            .then(data => MapLogisticsBillNoAndData(shopName, orderId, data))
             .catch(error => console.error('post error', error));
         }, 200);
     } catch (error) {
@@ -136,19 +166,39 @@ function GetTradeData(orderId, shopName){
     }
 }
 
-function MaplogisticsBillNo(shopName, orderId, data){
+function MapLogisticsBillNoAndData(shopName, orderId, data){
     console.log(data);
     let logisticsItems = data['result']['nativeLogistics']['logisticsItems'];
-    logisticsItems.forEach((logisticsItem) => {
+    let isFind = false;
+
+    for(let logisticsItem of logisticsItems) {
         let logisticsBillNo = logisticsItem['logisticsBillNo']
         if (!orderMap[shopName][orderId]['logistics'].includes(logisticsBillNo)) {
             orderMap[shopName][orderId]['logistics'].push(logisticsBillNo);
             orderMap[shopName][orderId]['data'] = data;
         }
-    });
+
+        console.log(logisticsBillNo);
+        console.log(gLogisticsBillNo);
+
+        if (logisticsBillNo == gLogisticsBillNo) {
+            isFind = true;
+            break;
+        }
+    }
     
     console.log(orderMap);
-    
+    console.log(isFind);
+
+    if (isFind) {
+        document.getElementById('orderId').innerHTML = orderId;
+        Show(data);
+    }
+}
+
+function Show(data) {
+    console.log("Show");
+    console.log(data);
 }
 
 function CalculateSignature(urlPath, data, shopName) {
@@ -172,4 +222,11 @@ function CalculateSignature(urlPath, data, shopName) {
     hex_res1_str = hex_res1_str.toUpperCase();
 
     return hex_res1_str;
+}
+
+
+// 清楚
+function Clean() {
+    document.getElementById('logisticsBillNo').value = '';
+    document.getElementById('orderId').innerHTML = '';
 }
