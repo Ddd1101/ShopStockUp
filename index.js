@@ -144,8 +144,6 @@ function GetTradeData(orderId, shopName){
 
     let params = new URLSearchParams(data).toString();
 
-    console.log(params);
-
     const url = base_url + request_type['trade'] + "alibaba.trade.get.sellerView/" + AppKey[shopName];
 
     try {
@@ -186,9 +184,6 @@ function MapLogisticsBillNoAndData(shopName, orderId, data){
             break;
         }
     }
-    
-    console.log(orderMap);
-    console.log(isFind);
 
     if (isFind) {
         document.getElementById('orderId').innerHTML = orderId;
@@ -198,7 +193,24 @@ function MapLogisticsBillNoAndData(shopName, orderId, data){
 
 function Show(data) {
     console.log("Show");
-    console.log(data);
+
+    console.log(data['result']['productItems']);
+
+    formateJson = {};
+    var table = document.getElementById("productTable");
+    for(let item of data['result']['productItems']){
+        var row = table.insertRow();
+        var name = row.insertCell(0);
+        var color = row.insertCell(1);
+        var size = row.insertCell(2);
+        var num = row.insertCell(3);
+        var img = row.insertCell(4);
+        name.innerHTML = item['name'];
+        color.innerHTML = item['skuInfos'][0]['value'];
+        size.innerHTML = item['skuInfos'][1]['value'];
+        num.innerHTML = item['quantity'];
+        img.innerHTML = '<img src="' + item['productImgUrl'][1] + '" alt="' + name + '" onclick="showImage(this.src)">'; 
+    }
 }
 
 function CalculateSignature(urlPath, data, shopName) {
@@ -224,9 +236,29 @@ function CalculateSignature(urlPath, data, shopName) {
     return hex_res1_str;
 }
 
-
-// 清楚
+// 清除
 function Clean() {
     document.getElementById('logisticsBillNo').value = '';
     document.getElementById('orderId').innerHTML = '';
+}
+
+
+var modal = document.getElementById('myModal');
+
+// 获取用于展示放大图片的<img>标签
+var modalImg = document.getElementById("img01");
+
+// 获取关闭按钮
+var span = document.getElementsByClassName("close")[0];
+
+
+// 点击图片打开模态框
+function showImage(src) {
+    modal.style.display = "block";
+    modalImg.src = src;
+}
+
+// 点击 <span> (x), 关闭模态框
+span.onclick = function() {
+    modal.style.display = "none";
 }
