@@ -20,7 +20,7 @@ function DoProcess() {
     // 0. 存储待查单号
     let inputText = document.getElementById('userInput').value;
     alert('You entered: ' + inputText);
-    // 1. 获取订单id并存储
+    // 1. 获取订单id & 获取对应的物流单号 & 存储
     GetOrderList();
 }
 
@@ -93,7 +93,7 @@ function MapOrderId(data, shopName){
     orderList.forEach((order) => {
         if(!orderMap[shopName].hasOwnProperty(order['baseInfo']['idOfStr'])){
             let _orderId = order['baseInfo']['idOfStr'];
-            orderMap[shopName][_orderId] = [];
+            orderMap[shopName][_orderId] = {"logistics":[]};
             GetTradeData(_orderId, shopName);
         }
     })
@@ -141,8 +141,9 @@ function MaplogisticsBillNo(shopName, orderId, data){
     let logisticsItems = data['result']['nativeLogistics']['logisticsItems'];
     logisticsItems.forEach((logisticsItem) => {
         let logisticsBillNo = logisticsItem['logisticsBillNo']
-        if (!orderMap[shopName][orderId].includes(logisticsBillNo)) {
-            orderMap[shopName][orderId].push(logisticsBillNo);
+        if (!orderMap[shopName][orderId]['logistics'].includes(logisticsBillNo)) {
+            orderMap[shopName][orderId]['logistics'].push(logisticsBillNo);
+            orderMap[shopName][orderId]['data'] = data;
         }
     });
     
