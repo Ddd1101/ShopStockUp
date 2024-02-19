@@ -187,6 +187,7 @@ function MapLogisticsBillNoAndData(shopName, orderId, data){
 
     if (isFind) {
         document.getElementById('orderId').innerHTML = orderId;
+        document.getElementById('shopName').innerHTML = shopName;
         Show(data);
     }
 }
