@@ -19,6 +19,7 @@ let orderMap = {
 let gLogisticsBillNo = "";
 
 function FindInMap() {
+    Clean2();
     gLogisticsBillNo = document.getElementById('logisticsBillNo').value;
     let isFind = false;
 
@@ -54,13 +55,14 @@ function FindInMap() {
 
 
 function DoProcess() {
+    Clean2();
     // 1. 获取订单id & 获取对应的物流单号 & 存储
     GetOrderList();
 }
 
 function GetOrderList() {
     var today = new Date();
-    today.setDate(today.getDate() - 3);
+    today.setDate(today.getDate() - 30);
     var startYear = today.getFullYear();
     var startMonth = (today.getMonth() + 1).toString().padStart(2, '0');
     var startDay = today.getDate().toString().padStart(2, '0');
@@ -187,7 +189,7 @@ function MapLogisticsBillNoAndData(shopName, orderId, data){
 
     if (isFind) {
         document.getElementById('orderId').innerHTML = orderId;
-        document.getElementById('shopName').innerHTML = shopName;
+        // document.getElementById('shopName').innerHTML = data['result']['baseInfo']['sellerContact']['companyName'];
         Show(data);
     }
 }
@@ -241,6 +243,16 @@ function CalculateSignature(urlPath, data, shopName) {
 function Clean() {
     document.getElementById('logisticsBillNo').value = '';
     document.getElementById('orderId').innerHTML = '';
+
+    var table = document.getElementById("productTable");
+    table.innerHTML = "";
+}
+
+function Clean2() {
+    document.getElementById('orderId').innerHTML = '';
+
+    var table = document.getElementById("productTable");
+    table.innerHTML = "";
 }
 
 
