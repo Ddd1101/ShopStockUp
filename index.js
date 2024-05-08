@@ -36,6 +36,7 @@ input.addEventListener("blur", function () {
 
 // 自动初始化
 window.onload = function () {
+  document.getElementById("status").innerHTML = "获取后台订单信息";
   DoProcess();
 
   document.getElementById("status").innerHTML = "等待查询";
@@ -82,6 +83,7 @@ function FindInMap() {
 
           document.getElementById("orderId").innerHTML = order;
         }
+        console.log(order);
 
         if (isFind) {
           break;
@@ -97,6 +99,7 @@ function FindInMap() {
   }
 
   if (!isFind) {
+    document.getElementById("status").innerHTML = "未查询到，获取后台订单信息";
     DoProcess();
   }
 }
@@ -105,8 +108,12 @@ function DoProcess() {
   Clean2();
   input.disabled = true;
   // 1. 获取订单id & 获取对应的物流单号 & 存储
-  document.getElementById("status").innerHTML = "获取后台订单信息";
   GetOrderList();
+
+  document.getElementById("status").innerHTML = "未查询到，此单无法查询";
+
+  input.disabled = false;
+  input.focus();
 }
 
 function GetOrderList() {
