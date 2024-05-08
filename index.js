@@ -103,6 +103,7 @@ function GetTradeList(data, shopName) {
     let params = new URLSearchParams(data).toString();
 
     const url = base_url + request_type['trade'] + "alibaba.trade.getSellerOrderList/" + AppKey[shopName];
+    
     try {
         setTimeout(() => {
             fetch(url, {
@@ -122,6 +123,7 @@ function GetTradeList(data, shopName) {
 }
 
 function MapOrderId(data, shopName){
+    console.log(data);
     orderList = data.result;
 
     orderList.forEach((order) => {
@@ -131,8 +133,6 @@ function MapOrderId(data, shopName){
             GetTradeData(_orderId, shopName);
         }
     })
-
-    console.log(orderMap);
 }
 
 function GetTradeData(orderId, shopName){
@@ -147,6 +147,9 @@ function GetTradeData(orderId, shopName){
     let params = new URLSearchParams(data).toString();
 
     const url = base_url + request_type['trade'] + "alibaba.trade.get.sellerView/" + AppKey[shopName];
+
+    // console.log(url)
+    // console.log(params)
 
     try {
         setTimeout(() => {
@@ -167,7 +170,6 @@ function GetTradeData(orderId, shopName){
 }
 
 function MapLogisticsBillNoAndData(shopName, orderId, data){
-    console.log(data);
     let logisticsItems = data['result']['nativeLogistics']['logisticsItems'];
     let isFind = false;
 
@@ -177,9 +179,6 @@ function MapLogisticsBillNoAndData(shopName, orderId, data){
             orderMap[shopName][orderId]['logistics'].push(logisticsBillNo);
             orderMap[shopName][orderId]['data'] = data;
         }
-
-        console.log(logisticsBillNo);
-        console.log(gLogisticsBillNo);
 
         if (logisticsBillNo == gLogisticsBillNo) {
             isFind = true;
@@ -196,8 +195,6 @@ function MapLogisticsBillNoAndData(shopName, orderId, data){
 
 function Show(data) {
     console.log("Show");
-
-    console.log(data['result']['productItems']);
 
     formateJson = {};
     var table = document.getElementById("productTable");
