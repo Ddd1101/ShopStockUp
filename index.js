@@ -26,10 +26,27 @@ let orderMap = {
   朝雄制衣厂: {},
 };
 
-let gLogisticsBillNo = "";
-
 // 找到文本输入框
 var input = document.getElementById("logisticsBillNo");
+
+// 添加事件监听器，以确保失去焦点时再次聚焦
+input.addEventListener("blur", function () {
+  input.focus();
+});
+
+// 自动初始化
+window.onload = function () {
+  DoProcess();
+
+  document.getElementById("status").innerHTML = "等待查询";
+
+  input.disabled = false;
+  input.focus();
+};
+
+let gLogisticsBillNo = "";
+
+input.focus();
 // 添加事件监听器
 input.addEventListener("keyup", function (event) {
   // 检查按下的是否是回车键
@@ -42,11 +59,17 @@ input.addEventListener("keyup", function (event) {
 });
 
 function FindInMap() {
-  document.getElementById("deliverId").innerHTML = input.value;
-  input.value = "";
   Clean2();
+
+  input.disabled = true;
+
+  document.getElementById("status").innerHTML = "订单信息查询中。。。";
+
   gLogisticsBillNo = document.getElementById("logisticsBillNo").value;
   let isFind = false;
+
+  document.getElementById("deliverId").innerHTML = input.value;
+  input.value = "";
 
   for (let shopName in orderMap) {
     let orderList = orderMap[shopName];
@@ -80,7 +103,9 @@ function FindInMap() {
 
 function DoProcess() {
   Clean2();
+  input.disabled = true;
   // 1. 获取订单id & 获取对应的物流单号 & 存储
+  document.getElementById("status").innerHTML = "获取后台订单信息";
   GetOrderList();
 }
 
@@ -234,7 +259,7 @@ function MapLogisticsBillNoAndData(shopName, orderId, data) {
 }
 
 function Show(data) {
-  console.log("Show");
+  document.getElementById("status").innerHTML = "查询完成";
 
   formateJson = {};
   var table = document.getElementById("productTable");
@@ -256,6 +281,9 @@ function Show(data) {
       name +
       '" onclick="showImage(this.src)">';
   }
+
+  input.disabled = false;
+  input.focus();
 }
 
 function CalculateSignature(urlPath, data, shopName) {
