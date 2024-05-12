@@ -83,7 +83,6 @@ function FindInMap() {
 
           document.getElementById("orderId").innerHTML = order;
         }
-        console.log(order);
 
         if (isFind) {
           break;
@@ -133,7 +132,8 @@ function GetOrderList() {
 
   let orderstatus = "waitbuyerreceive";
 
-  let shopNameList = ["联球制衣厂", "朝雄制衣厂"];
+  // let shopNameList = ["联球制衣厂", "朝雄制衣厂"];
+  let shopNameList = ["联球制衣厂"];
 
   let orderListRaw = [];
 
@@ -187,7 +187,7 @@ function GetTradeList(data, shopName) {
 }
 
 function MapOrderId(data, shopName) {
-  console.log(data);
+  // console.log(data);
   orderList = data.result;
 
   orderList.forEach((order) => {
@@ -270,23 +270,76 @@ function Show(data) {
 
   formateJson = {};
   var table = document.getElementById("productTable");
+
+  let itemsJson = {};
+
   for (let item of data["result"]["productItems"]) {
-    var row = table.insertRow();
-    var name = row.insertCell(0);
-    var color = row.insertCell(1);
-    var size = row.insertCell(2);
-    var num = row.insertCell(3);
-    var img = row.insertCell(4);
-    name.innerHTML = item["name"];
-    color.innerHTML = item["skuInfos"][0]["value"];
-    size.innerHTML = item["skuInfos"][1]["value"];
-    num.innerHTML = item["quantity"];
-    img.innerHTML =
-      '<img src="' +
-      item["productImgUrl"][1] +
-      '" alt="' +
-      name +
-      '" onclick="showImage(this.src)">';
+    // console.log(item);
+    let cargoNumber = "";
+    if (item.hasOwnProperty("productCargoNumber")) {
+      cargoNumber = item["productCargoNumber"];
+    } else if (item.hasOwnProperty("cargoNumber")) {
+      cargoNumber = item["cargoNumber"];
+    }
+    console.log(cargoNumber);
+    // 新货号 item 基础信息
+    if (!itemsJson.hasOwnProperty(cargoNumber)) {
+      itemsJson[cargoNumber] = {
+        name: item["name"],
+        sku: {},
+      };
+    }
+    //sku
+    let color = item["skuInfos"][0]["value"];
+    let size = item["skuInfos"][1]["value"];
+    let quantity = item["quantity"];
+
+    if (!itemsJson[cargoNumber]["sku"].hasOwnProperty(color)) {
+      itemsJson[cargoNumber]["sku"][color] = {
+        size: {},
+        productImgUrl: item["productImgUrl"][1],
+      };
+      itemsJson[cargoNumber]["sku"][color]["size"][size] = quantity;
+    }
+  }
+
+  console.log(itemsJson);
+
+  for (let itemCargoNumber in itemsJson) {
+    let name = itemsJson[itemCargoNumber].name;
+    for (let color in itemsJson[itemCargoNumber]["sku"]) {
+      let imgUrl = itemsJson[itemCargoNumber]["sku"][color].productImgUrl;
+      // size
+      let sizeStr = "";
+      let isFirst = true;
+      for (let size in itemsJson[itemCargoNumber]["sku"][color]["size"]) {
+        if (!isFirst) {
+          sizeStr += "\n";
+        }
+        sizeStr +=
+          size +
+          "&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;" +
+          itemsJson[itemCargoNumber]["sku"][color]["size"][size] +
+          "&nbsp;件";
+      }
+      let row = table.insertRow();
+      let nameCell = row.insertCell(0);
+      let colorCell = row.insertCell(1);
+      colorCell.style.whiteSpace = "nowrap";
+      let sizeCell = row.insertCell(2);
+      sizeCell.style.whiteSpace = "nowrap";
+
+      let imgcell = row.insertCell(3);
+      nameCell.innerHTML = name;
+      colorCell.innerHTML = color;
+      sizeCell.innerHTML = sizeStr;
+      imgcell.innerHTML =
+        '<img src="' +
+        imgUrl +
+        '" alt="' +
+        name +
+        '" onclick="showImage(this.src)">';
+    }
   }
 
   input.disabled = false;
