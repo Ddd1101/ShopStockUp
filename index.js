@@ -389,6 +389,10 @@ function Clean2() {
   table.innerHTML = "";
 }
 
+function Fresh() {
+  location.reload();
+}
+
 var modal = document.getElementById("myModal");
 
 // 获取用于展示放大图片的<img>标签
