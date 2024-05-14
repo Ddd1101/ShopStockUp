@@ -117,7 +117,7 @@ function DoProcess() {
 
 function GetOrderList() {
   var today = new Date();
-  today.setDate(today.getDate() - 30);
+  today.setDate(today.getDate() - 5);
   var startYear = today.getFullYear();
   var startMonth = (today.getMonth() + 1).toString().padStart(2, "0");
   var startDay = today.getDate().toString().padStart(2, "0");
@@ -132,8 +132,8 @@ function GetOrderList() {
 
   let orderstatus = "waitbuyerreceive";
 
-  // let shopNameList = ["联球制衣厂", "朝雄制衣厂"];
-  let shopNameList = ["联球制衣厂"];
+  let shopNameList = ["联球制衣厂", "朝雄制衣厂"];
+  // let shopNameList = ["联球制衣厂"];
 
   let orderListRaw = [];
 
@@ -145,7 +145,7 @@ function GetOrderList() {
       needMemoInfo: "true",
     };
 
-    response = GetTradeList(data, shopName);
+    GetTradeList(data, shopName);
   });
 }
 
@@ -178,7 +178,7 @@ function GetTradeList(data, shopName) {
         },
       })
         .then((response) => response.json())
-        .then((data) => MapOrderId(data, shopName))
+        .then((responseData) => OnResponse(responseData, shopName, data))
         .catch((error) => console.error("post error", error));
     }, 200);
   } catch (error) {
@@ -186,9 +186,61 @@ function GetTradeList(data, shopName) {
   }
 }
 
+function OnResponse(responseData, shopName, requestData) {
+  let itemNum = responseData["totalRecord"];
+  let pageNum = Math.ceil(itemNum / 20); // 页数
+
+  delete requestData._aop_signature;
+
+  const requests = [];
+
+  for (let i = 1; i <= pageNum; i++) {
+    delete requestData._aop_signature;
+    requestData["page"] = String(i);
+    const _aop_signature = CalculateSignature(
+      request_type["trade"] +
+        "alibaba.trade.getSellerOrderList/" +
+        AppKey[shopName],
+      requestData,
+      shopName
+    );
+    requestData["_aop_signature"] = _aop_signature;
+
+    let params = new URLSearchParams(requestData).toString();
+
+    const url =
+      base_url +
+      request_type["trade"] +
+      "alibaba.trade.getSellerOrderList/" +
+      AppKey[shopName];
+
+    const request = fetch(url, {
+      method: "POST",
+      body: params,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+      .then((response) => response.json())
+      .catch((error) => console.error("post error", error));
+
+    requests.push(request);
+  }
+
+  Promise.all(requests).then((responses) => {
+    // 处理所有响应数据
+    const combinedResult = responses.reduce((acc, response) => {
+      acc = acc.concat(response.result);
+      return acc;
+    }, []);
+
+    // 处理合并后的结果
+    MapOrderId(combinedResult, shopName);
+  });
+}
+
 function MapOrderId(data, shopName) {
-  // console.log(data);
-  orderList = data.result;
+  orderList = data;
 
   orderList.forEach((order) => {
     if (!orderMap[shopName].hasOwnProperty(order["baseInfo"]["idOfStr"])) {
@@ -219,9 +271,6 @@ function GetTradeData(orderId, shopName) {
     request_type["trade"] +
     "alibaba.trade.get.sellerView/" +
     AppKey[shopName];
-
-  // console.log(url)
-  // console.log(params)
 
   try {
     setTimeout(() => {
@@ -267,16 +316,15 @@ function MapLogisticsBillNoAndData(shopName, orderId, data) {
 
 function Show(data) {
   document.getElementById("status").innerHTML = "查询完成";
+  document.getElementById("shopName").innerHTML =
+    data["result"]["baseInfo"]["sellerContact"]["companyName"];
 
   formateJson = {};
   var table = document.getElementById("productTable");
 
   let itemsJson = {};
 
-  console.log(data);
-
   for (let item of data["result"]["productItems"]) {
-    console.log(item);
     let cargoNumber = "";
     if (item.hasOwnProperty("productCargoNumber")) {
       cargoNumber = item["productCargoNumber"];
@@ -304,8 +352,6 @@ function Show(data) {
     itemsJson[cargoNumber]["sku"][color]["size"][size] = quantity;
   }
 
-  console.log(itemsJson);
-
   for (let itemCargoNumber in itemsJson) {
     let name = itemsJson[itemCargoNumber].name;
     for (let color in itemsJson[itemCargoNumber]["sku"]) {
@@ -313,10 +359,18 @@ function Show(data) {
       // size
       let sizeStr = "";
       let isFirst = true;
-      for (let size in itemsJson[itemCargoNumber]["sku"][color]["size"]) {
+      let sizeList = itemsJson[itemCargoNumber]["sku"][color]["size"];
+      // 提取JSON对象的键并进行排序
+      let sortedSize = Object.keys(sizeList).sort();
+      // 根据排序后的键重新构建JSON对象
+      let sortedSizeJson = {};
+      sortedSize.forEach((key) => {
+        sortedSizeJson[key] = sizeList[key];
+      });
+      // 打印排序后的JSON对象
+      for (let size in sortedSizeJson) {
         if (isFirst != true) {
           sizeStr += "<br>";
-          console.log("not first");
         }
         isFirst = false;
         sizeStr +=
@@ -336,7 +390,6 @@ function Show(data) {
       nameCell.innerHTML = name;
       colorCell.innerHTML = color;
       sizeCell.innerHTML = sizeStr;
-      console.log(sizeStr);
       var imgUrlFixed = imgUrl.replace(/^http:\/\//i, "https://");
       imgcell.innerHTML =
         '<img src="' +
