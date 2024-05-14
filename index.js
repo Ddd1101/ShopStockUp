@@ -273,15 +273,16 @@ function Show(data) {
 
   let itemsJson = {};
 
+  console.log(data);
+
   for (let item of data["result"]["productItems"]) {
-    // console.log(item);
+    console.log(item);
     let cargoNumber = "";
     if (item.hasOwnProperty("productCargoNumber")) {
       cargoNumber = item["productCargoNumber"];
     } else if (item.hasOwnProperty("cargoNumber")) {
       cargoNumber = item["cargoNumber"];
     }
-    console.log(cargoNumber);
     // 新货号 item 基础信息
     if (!itemsJson.hasOwnProperty(cargoNumber)) {
       itemsJson[cargoNumber] = {
@@ -299,8 +300,8 @@ function Show(data) {
         size: {},
         productImgUrl: item["productImgUrl"][1],
       };
-      itemsJson[cargoNumber]["sku"][color]["size"][size] = quantity;
     }
+    itemsJson[cargoNumber]["sku"][color]["size"][size] = quantity;
   }
 
   console.log(itemsJson);
@@ -313,9 +314,11 @@ function Show(data) {
       let sizeStr = "";
       let isFirst = true;
       for (let size in itemsJson[itemCargoNumber]["sku"][color]["size"]) {
-        if (!isFirst) {
-          sizeStr += "\n";
+        if (isFirst != true) {
+          sizeStr += "<br>";
+          console.log("not first");
         }
+        isFirst = false;
         sizeStr +=
           size +
           "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
@@ -333,9 +336,11 @@ function Show(data) {
       nameCell.innerHTML = name;
       colorCell.innerHTML = color;
       sizeCell.innerHTML = sizeStr;
+      console.log(sizeStr);
+      var imgUrlFixed = imgUrl.replace(/^http:\/\//i, "https://");
       imgcell.innerHTML =
         '<img src="' +
-        imgUrl +
+        imgUrlFixed +
         '" alt="' +
         name +
         '" onclick="showImage(this.src)">';
