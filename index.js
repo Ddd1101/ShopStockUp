@@ -51,12 +51,12 @@ input.focus();
 // 添加事件监听器
 input.addEventListener("keyup", function (event) {
   // 检查按下的是否是回车键
-  // if (event.keyCode === 13) {
-  //   // 执行您的代码
-  //   // alert("回车键被按下！");
-  //   input.value = "";
-  //   FindInMap();
-  // }
+  if (event.keyCode === 13) {
+    // 执行您的代码
+    // alert("回车键被按下！");
+    FindInMap();
+    input.value = "";
+  }
 });
 
 function FindInMap() {
