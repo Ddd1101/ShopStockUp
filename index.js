@@ -351,6 +351,7 @@ function Show(data, shopType) {
       cargoNumber = item["cargoNumber"];
     }
     // 新货号 item 基础信息
+    productCargoNumber = "";
     if (!itemsJson.hasOwnProperty(cargoNumber)) {
       itemsJson[cargoNumber] = {
         name: item["name"],
@@ -361,6 +362,8 @@ function Show(data, shopType) {
     console.log(item["skuInfos"]);
     let color = item["skuInfos"][0]["value"];
     let size = "无";
+    console.log(item["productCargoNumber"]);
+    productCargoNumber = item["productCargoNumber"];
     if (item["skuInfos"].length > 1) {
       size = item["skuInfos"][1]["value"];
     }
@@ -410,7 +413,7 @@ function Show(data, shopType) {
       sizeCell.style.whiteSpace = "nowrap";
 
       let imgcell = row.insertCell(3);
-      nameCell.innerHTML = name;
+      nameCell.innerHTML = productCargoNumber;
       colorCell.innerHTML = color;
       sizeCell.innerHTML = sizeStr;
       var imgUrlFixed = imgUrl.replace(/^http:\/\//i, "https://");
