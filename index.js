@@ -1,17 +1,17 @@
 let AppKey = {
   联球制衣厂: "3527689",
   朝雄制衣厂: "4834884",
-  万盈饰品厂: "2888236",
+  万盈饰品厂: "3527689",
 };
 let AppSecret = {
   联球制衣厂: "Zw5KiCjSnL",
   朝雄制衣厂: "JeV4khKJshr",
-  万盈饰品厂: "Zy7QvG0bQJI",
+  万盈饰品厂: "Zw5KiCjSnL",
 };
 let access_token = {
   联球制衣厂: "999d182a-3576-4aee-97c5-8eeebce5e085",
   朝雄制衣厂: "ef65f345-7060-4031-98ad-57d7d857f4d9",
-  万盈饰品厂: "f2f18480-0067-462f-9fac-952311ad4349",
+  万盈饰品厂: "cd62b5c5-00d1-41c9-becf-4f9dfcbf4b75",
 };
 
 let request_type = {
@@ -24,6 +24,12 @@ let base_url = "https://gw.open.1688.com/openapi/";
 let orderMap = {
   联球制衣厂: {},
   朝雄制衣厂: {},
+  万盈饰品厂: {},
+};
+
+const SHOP_TYPE = {
+  CLOTH: 0,
+  JEWELRY: 1,
 };
 
 // 找到文本输入框
@@ -79,9 +85,13 @@ function FindInMap() {
       for (let logisticsBillNo of logisticsBillNoList) {
         if (String(logisticsBillNo) == String(gLogisticsBillNo)) {
           isFind = true;
-          Show(orderList[order]["data"]);
-
+          shopType = SHOP_TYPE.CLOTH;
+          if (shopName == "万盈饰品厂") {
+            shopType = SHOP_TYPE.JEWELRY;
+          }
           document.getElementById("orderId").innerHTML = order;
+
+          Show(orderList[order]["data"], shopType);
         }
 
         if (isFind) {
@@ -132,8 +142,9 @@ function GetOrderList() {
 
   let orderstatus = "waitbuyerreceive";
 
-  let shopNameList = ["联球制衣厂", "朝雄制衣厂"];
+  let shopNameList = ["联球制衣厂", "朝雄制衣厂", "万盈饰品厂"];
   // let shopNameList = ["联球制衣厂"];
+  // let shopNameList = ["万盈饰品厂"];
 
   let orderListRaw = [];
 
@@ -187,6 +198,8 @@ function GetTradeList(data, shopName) {
 }
 
 function OnResponse(responseData, shopName, requestData) {
+  // console.log(responseData);
+
   let itemNum = responseData["totalRecord"];
   let pageNum = Math.ceil(itemNum / 20); // 页数
 
@@ -308,13 +321,19 @@ function MapLogisticsBillNoAndData(shopName, orderId, data) {
   }
 
   if (isFind) {
+    console.log("isfind", shopName);
     document.getElementById("orderId").innerHTML = orderId;
     // document.getElementById('shopName').innerHTML = data['result']['baseInfo']['sellerContact']['companyName'];
-    Show(data);
+    shopType = SHOP_TYPE.CLOTH;
+    if (shopName == "万盈饰品厂") {
+      shopType = SHOP_TYPE.JEWELRY;
+    }
+    Show(data, shopType);
   }
 }
 
-function Show(data) {
+function Show(data, shopType) {
+  console.log(data);
   document.getElementById("status").innerHTML = "查询完成";
   document.getElementById("shopName").innerHTML =
     data["result"]["baseInfo"]["sellerContact"]["companyName"];
@@ -339,8 +358,12 @@ function Show(data) {
       };
     }
     //sku
+    console.log(item["skuInfos"]);
     let color = item["skuInfos"][0]["value"];
-    let size = item["skuInfos"][1]["value"];
+    let size = "无";
+    if (item["skuInfos"].length > 1) {
+      size = item["skuInfos"][1]["value"];
+    }
     let quantity = item["quantity"];
 
     if (!itemsJson[cargoNumber]["sku"].hasOwnProperty(color)) {
