@@ -198,8 +198,6 @@ function GetTradeList(data, shopName) {
 }
 
 function OnResponse(responseData, shopName, requestData) {
-  // console.log(responseData);
-
   let itemNum = responseData["totalRecord"];
   let pageNum = Math.ceil(itemNum / 20); // 页数
 
@@ -333,7 +331,6 @@ function MapLogisticsBillNoAndData(shopName, orderId, data) {
 }
 
 function Show(data, shopType) {
-  console.log(data);
   document.getElementById("status").innerHTML = "查询完成";
   document.getElementById("shopName").innerHTML =
     data["result"]["baseInfo"]["sellerContact"]["companyName"];
@@ -359,11 +356,8 @@ function Show(data, shopType) {
       };
     }
     //sku
-    console.log(item["skuInfos"]);
     let color = item["skuInfos"][0]["value"];
     let size = "无";
-    console.log(item["productCargoNumber"]);
-    productCargoNumber = item["productCargoNumber"];
     if (item["skuInfos"].length > 1) {
       size = item["skuInfos"][1]["value"];
     }
