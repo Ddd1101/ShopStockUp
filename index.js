@@ -413,7 +413,7 @@ function Show(data, shopType) {
       sizeCell.style.whiteSpace = "nowrap";
 
       let imgcell = row.insertCell(3);
-      nameCell.innerHTML = productCargoNumber;
+      nameCell.innerHTML = itemCargoNumber;
       colorCell.innerHTML = color;
       sizeCell.innerHTML = sizeStr;
       var imgUrlFixed = imgUrl.replace(/^http:\/\//i, "https://");
