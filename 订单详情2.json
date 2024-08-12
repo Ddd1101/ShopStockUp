@@ -1,0 +1,208 @@
+{
+  "result": {
+      "extAttributes": [],
+      "baseInfo": {
+          "allDeliveredTime": "20240219124413000+0800",
+          "payTime": "20240217223408000+0800",
+          "discount": 0,
+          "alipayTradeId": "2024021722001813291410989282",
+          "sumProductPayment": 12.9,
+          "buyerFeedback": "请在支付完成后的2日内完成发货",
+          "flowTemplateCode": "assureTrade",
+          "sellerOrder": false,
+          "buyerLoginId": "s*",
+          "modifyTime": "20240219124413000+0800",
+          "id": 3780985755267232300,
+          "buyerContact": {
+              "phone": "",
+              "imInPlatform": "s*",
+              "name": "雷东明",
+              "mobile": "19357228503",
+              "companyName": "全球速卖通"
+          },
+          "buyerLevel": "L6",
+          "sellerAlipayId": "2088312897948166",
+          "newStepOrderList": [
+              {
+                  "gmtStart": "20240217223348000+0800",
+                  "gmtPay": "20240217223408000+0800",
+                  "stepNo": 1,
+                  "lastStep": true,
+                  "stepName": "全款交易",
+                  "activeStatus": 1,
+                  "payStatus": 2,
+                  "logisticsStatus": 2,
+                  "payFee": 12.9,
+                  "paidFee": 12.9,
+                  "adjustFee": 0,
+                  "discountFee": 0,
+                  "postFee": 0,
+                  "paidPostFee": 0
+              }
+          ],
+          "sellerLoginId": "联*",
+          "closeOperateType": "",
+          "totalAmount": 12.9,
+          "shippingFee": 0,
+          "refund": 0,
+          "status": "waitbuyerreceive",
+          "refundPayment": 0,
+          "sellerContact": {
+              "phone": "",
+              "imInPlatform": "联*",
+              "name": "童丽阳",
+              "companyName": "苍南县联球制衣厂"
+          },
+          "couponFee": 0,
+          "receiverInfo": {
+              "toFullName": "郑咏",
+              "toDivisionCode": "330109",
+              "toMobile": "18661241525",
+              "toPost": "311201",
+              "toArea": "浙江省 杭州市 萧山区 浙江省杭州市钱塘区临江街道纬二路88号乐歌物流园二楼，收货月台：5-1"
+          },
+          "remark": "请在支付完成后的2日内完成发货",
+          "tradeType": "50060",
+          "idOfStr": "3780985755267232333",
+          "stepPayAll": false,
+          "buyerAlipayId": "2088441523713299",
+          "createTime": "20240217223348000+0800",
+          "businessType": "cb",
+          "overSeaOrder": false,
+          "tradeTypeDesc": "4.0担保交易",
+          "tradeTypeCode": "fxassure",
+          "payChannelList": [
+              "跨境宝2.0"
+          ],
+          "payChannelCodeList": [
+              "kjpayV2"
+          ],
+          "buyerOpenUid": "BBBJp-MzRyZZDDo68BwPYdeXA"
+      },
+      "productItems": [
+          {
+              "entryDiscount": 0,
+              "productID": 684423862927,
+              "guaranteesTerms": [
+                  {
+                      "assuranceInfo": "卖家在承诺买家保障服务的基础上，向买家提供“24小时发货延必赔”的服务。在买家通过支付宝担保交易完成付款或通过货到付款下单成功后，卖家承诺在买家支付成功起24小时内发货。如卖家未履行前述承诺，买家可在指定期限内发起维权，并申请赔付。",
+                      "assuranceType": "essxsfh",
+                      "qualityAssuranceType": "24小时发货",
+                      "shortCode": "C"
+                  },
+                  {
+                      "shortCode": "C_2"
+                  },
+                  {
+                      "shortCode": "EOT"
+                  }
+              ],
+              "type": "common",
+              "orderSharedPromotionFee": 0,
+              "price": 12.9,
+              "promotionsFee": 0,
+              "tbId": 3780985755267232300,
+              "specId": "ed0c53ee485adbfe014be449c40df44d",
+              "subItemID": 3780985755267232300,
+              "skuInfos": [
+                  {
+                      "name": "颜色",
+                      "value": "CX-L 纯色湖蓝"
+                  },
+                  {
+                      "name": "适合身高",
+                      "value": "130cm"
+                  }
+              ],
+              "itemDiscountFee": 0,
+              "quantityFactor": 1,
+              "unit": "件",
+              "name": "儿童秋冬棉毛单裤中小童棉质柔软透气秋裤宝宝印花保暖家居睡裤",
+              "refund": 0,
+              "status": "waitbuyerreceive",
+              "gmtModified": "20240219124413000+0800",
+              "productImgUrl": [
+                  "http://cbu01.alicdn.com/img/ibank/O1CN011s4I3Z1Bs2ss0U5U6_!!0-0-cib.80x80.jpg",
+                  "http://cbu01.alicdn.com/img/ibank/O1CN011s4I3Z1Bs2ss0U5U6_!!0-0-cib.jpg"
+              ],
+              "statusStr": "等待买家收货",
+              "actualPaidFee": 1290,
+              "crossPromotionFee": 0,
+              "productSnapshotUrl": "https://trade.1688.com/order/offer_snapshot.htm?order_entry_id=3780985755267232333",
+              "cargoNumber": "220146",
+              "itemAmount": 12.9,
+              "quantity": 1,
+              "bMss": "1",
+              "subItemIDString": "3780985755267232333",
+              "gmtCreate": "20240217223348000+0800",
+              "productCargoNumber": "220146",
+              "logisticsStatus": 2,
+              "skuID": 4893461877976
+          }
+      ],
+      "orderBizInfo": {
+          "odsCyd": false,
+          "creditOrder": false,
+          "isCz": false
+      },
+      "orderRateInfo": {
+          "buyerRateStatus": 5,
+          "sellerRateStatus": 5
+      },
+      "tradeTerms": [
+          {
+              "phase": 69292117115232340,
+              "payWayDesc": "支付平台",
+              "expressPay": false,
+              "payTime": "20240217223408000+0800",
+              "payStatusDesc": "已付款",
+              "payWay": "13",
+              "cardPay": false,
+              "payStatus": "2",
+              "phasAmount": 12.9
+          }
+      ],
+      "nativeLogistics": {
+          "address": "浙江省杭州市钱塘区临江街道纬二路88号乐歌物流园二楼，收货月台：5-1",
+          "area": "萧山区",
+          "areaCode": "330109",
+          "city": "杭州市",
+          "contactPerson": "郑咏",
+          "mobile": "18661241525",
+          "province": "浙江省",
+          "zip": "311201",
+          "logisticsItems": [
+              {
+                  "deliveredTime": "20240219124413000+0800",
+                  "logisticsCode": "LP00631081474948",
+                  "type": "0",
+                  "id": 194007228751685,
+                  "status": "alreadysend",
+                  "gmtModified": "20240219124413000+0800",
+                  "gmtCreate": "20240219124413000+0800",
+                  "fromCity": "温州市",
+                  "fromArea": "苍南县",
+                  "fromAddress": "钱库镇 小云兜225号",
+                  "fromPhone": "",
+                  "fromPost": "000000",
+                  "logisticsCompanyId": 352,
+                  "logisticsCompanyNo": "HTKY",
+                  "logisticsCompanyName": "极兔速递-原百世快递",
+                  "logisticsBillNo": "JT3064594528531",
+                  "subItemIds": "3780985755267232333",
+                  "toCity": "杭州市",
+                  "toArea": "萧山区",
+                  "toAddress": "浙江省杭州市钱塘区临江街道纬二路88号乐歌物流园二楼，收货月台：5-1",
+                  "toPost": "311201",
+                  "noLogisticsCondition": "-1",
+                  "noLogisticsName": "",
+                  "noLogisticsTel": "",
+                  "noLogisticsBillNo": ""
+              }
+          ]
+      },
+      "fromEncryptOrder": false,
+      "officialLogisticOrder": false
+  },
+  "success": "true"
+}
