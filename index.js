@@ -2,16 +2,19 @@ let AppKey = {
   联球制衣厂: "3527689",
   朝雄制衣厂: "4834884",
   万盈饰品厂: "3527689",
+  义乌睿得: "3527689",
 };
 let AppSecret = {
   联球制衣厂: "Zw5KiCjSnL",
   朝雄制衣厂: "JeV4khKJshr",
   万盈饰品厂: "Zw5KiCjSnL",
+  义乌睿得: "Zw5KiCjSnL",
 };
 let access_token = {
   联球制衣厂: "999d182a-3576-4aee-97c5-8eeebce5e085",
   朝雄制衣厂: "ef65f345-7060-4031-98ad-57d7d857f4d9",
   万盈饰品厂: "cd62b5c5-00d1-41c9-becf-4f9dfcbf4b75",
+  义乌睿得: "7f813331-15d6-40a8-97ac-00589efc8e81",
 };
 
 let request_type = {
@@ -25,7 +28,14 @@ let orderMap = {
   联球制衣厂: {},
   朝雄制衣厂: {},
   万盈饰品厂: {},
+  义乌睿得: {},
 };
+
+let locationMap = {
+  万盈饰品厂: {},
+};
+
+let location_table = {};
 
 const SHOP_TYPE = {
   CLOTH: 0,
@@ -43,6 +53,8 @@ input.addEventListener("blur", function () {
 // 自动初始化
 window.onload = function () {
   document.getElementById("status").innerHTML = "获取后台订单信息";
+  getLocationTable();
+
   DoProcess();
 
   document.getElementById("status").innerHTML = "等待查询";
@@ -114,6 +126,7 @@ function FindInMap() {
 }
 
 function DoProcess() {
+  console.log("DoProcess");
   Clean2();
   input.disabled = true;
   // 1. 获取订单id & 获取对应的物流单号 & 存储
@@ -126,6 +139,7 @@ function DoProcess() {
 }
 
 function GetOrderList() {
+  console.log("GetOrderList");
   var today = new Date();
   today.setDate(today.getDate() - 5);
   var startYear = today.getFullYear();
@@ -145,6 +159,7 @@ function GetOrderList() {
   let shopNameList = ["联球制衣厂", "朝雄制衣厂", "万盈饰品厂"];
   // let shopNameList = ["联球制衣厂"];
   // let shopNameList = ["万盈饰品厂"];
+  // let shopNameList = ["义乌睿得"];
 
   let orderListRaw = [];
 
@@ -161,6 +176,7 @@ function GetOrderList() {
 }
 
 function GetTradeList(data, shopName) {
+  console.log("GetTradeList");
   data["access_token"] = access_token[shopName];
   const _aop_signature = CalculateSignature(
     request_type["trade"] +
@@ -192,12 +208,12 @@ function GetTradeList(data, shopName) {
         .then((responseData) => OnResponse(responseData, shopName, data))
         .catch((error) => console.error("post error", error));
     }, 200);
-  } catch (error) {
     console.error("post error", error);
-  }
+  } catch (error) {}
 }
 
 function OnResponse(responseData, shopName, requestData) {
+  console.log("OnResponse");
   let itemNum = responseData["totalRecord"];
   let pageNum = Math.ceil(itemNum / 20); // 页数
 
@@ -251,6 +267,7 @@ function OnResponse(responseData, shopName, requestData) {
 }
 
 function MapOrderId(data, shopName) {
+  console.log("MapOrderId");
   orderList = data;
 
   orderList.forEach((order) => {
@@ -319,7 +336,6 @@ function MapLogisticsBillNoAndData(shopName, orderId, data) {
   }
 
   if (isFind) {
-    console.log("isfind", shopName);
     document.getElementById("orderId").innerHTML = orderId;
     // document.getElementById('shopName').innerHTML = data['result']['baseInfo']['sellerContact']['companyName'];
     shopType = SHOP_TYPE.CLOTH;
@@ -401,13 +417,16 @@ function Show(data, shopType) {
       }
       let row = table.insertRow();
       let nameCell = row.insertCell(0);
-      let colorCell = row.insertCell(1);
+      let locationCell = row.insertCell(1);
+      let colorCell = row.insertCell(2);
       colorCell.style.whiteSpace = "nowrap";
-      let sizeCell = row.insertCell(2);
+      let sizeCell = row.insertCell(3);
       sizeCell.style.whiteSpace = "nowrap";
 
-      let imgcell = row.insertCell(3);
+      let imgcell = row.insertCell(4);
       nameCell.innerHTML = itemCargoNumber;
+      locationCell.innerHTML = getLocation(itemCargoNumber, shopType);
+      console.log(getLocation(itemCargoNumber, shopType));
       colorCell.innerHTML = color;
       sizeCell.innerHTML = sizeStr;
       var imgUrlFixed = imgUrl.replace(/^http:\/\//i, "https://");
@@ -456,6 +475,7 @@ function Clean() {
 }
 
 function Clean2() {
+  console.log("Clean2");
   document.getElementById("orderId").innerHTML = "";
 
   var table = document.getElementById("productTable");
@@ -484,3 +504,48 @@ function showImage(src) {
 span.onclick = function () {
   modal.style.display = "none";
 };
+
+function getLocationTable() {
+  const options2 = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      authorization:
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjQ4Mzc2NTAsImR0YWJsZV91dWlkIjoiNzJlNWQ1Y2UtMjM2MS00ODA1LWIxNjQtZWNiZWUzZDMzMWQzIiwicGVybWlzc2lvbiI6InJ3Iiwib3JnX2lkIjotMSwib3duZXJfaWQiOiJmYzQxZDI2MDljMjY0N2Y0YTc0NDUyNGQwMTlhMTY2N0BhdXRoLmxvY2FsIiwiYXBwX25hbWUiOiJcdTZkNGJcdThiZDUiLCJ1c2VybmFtZSI6IiIsImlkX2luX29yZyI6IiIsInVzZXJfZGVwYXJ0bWVudF9pZHNfbWFwIjp7ImN1cnJlbnRfdXNlcl9kZXBhcnRtZW50X2lkcyI6W10sImN1cnJlbnRfdXNlcl9kZXBhcnRtZW50X2FuZF9zdWJfaWRzIjpbXX19.VQeQ_hbevxGkIrYFUxv9tC6gaRqtfKHrm2O56LQ_nvs",
+    },
+  };
+
+  const params = new URLSearchParams({
+    table_name: "货架-A",
+  });
+
+  // 将参数附加到 URL
+  const url = `https://dtable-server.seatable.cn/api/v1/dtables/72e5d5ce-2361-4805-b164-ecbee3d331d3/rows/?${params.toString()}`;
+
+  fetch(url, options2)
+    .then((response) => response.json())
+    .then((response) => getLocationTableCallBack(response))
+    .catch((err) => console.error(err));
+}
+
+function getLocationTableCallBack(response) {
+  location_table = response;
+  // console.log(location_table);
+  // console.log(location_table["rows"]);
+  for (let i = 0; i < location_table["rows"].length; i++) {
+    for (let j = 1; j <= 10; j++) {
+      if (location_table["rows"][i][j + "号仓"] != null) {
+        let cargoNumber = location_table["rows"][i][j + "号仓"];
+        locationMap["万盈饰品厂"][cargoNumber] =
+          location_table["rows"][i]["表头"] + "-" + j + "号仓";
+      }
+    }
+  }
+}
+
+function getLocation(cargoNumber, shopType) {
+  if (shopType == SHOP_TYPE.CLOTH) {
+    return "未找到对应商户";
+  }
+  return locationMap["万盈饰品厂"][cargoNumber];
+}
