@@ -426,7 +426,6 @@ function Show(data, shopType) {
       let imgcell = row.insertCell(4);
       nameCell.innerHTML = itemCargoNumber;
       locationCell.innerHTML = getLocation(itemCargoNumber, shopType);
-      console.log(getLocation(itemCargoNumber, shopType));
       colorCell.innerHTML = color;
       sizeCell.innerHTML = sizeStr;
       var imgUrlFixed = imgUrl.replace(/^http:\/\//i, "https://");
@@ -535,9 +534,16 @@ function getLocationTableCallBack(response) {
   for (let i = 0; i < location_table["rows"].length; i++) {
     for (let j = 1; j <= 10; j++) {
       if (location_table["rows"][i][j + "号仓"] != null) {
-        let cargoNumber = location_table["rows"][i][j + "号仓"];
+        let cargoNumberRaw = location_table["rows"][i][j + "号仓"];
+        // 库存为空
+        let cargoNumberStrList = cargoNumberRaw.split("-");
+        let cargoNumber = cargoNumberStrList[0];
         locationMap["万盈饰品厂"][cargoNumber] =
           location_table["rows"][i]["表头"] + "-" + j + "号仓";
+
+        if (cargoNumberStrList.length > 1 && cargoNumberStrList[1] == "0") {
+          locationMap["万盈饰品厂"][cargoNumber] += " 无库存";
+        }
       }
     }
   }
