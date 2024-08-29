@@ -53,7 +53,7 @@ input.addEventListener("blur", function () {
 // 自动初始化
 window.onload = function () {
   document.getElementById("status").innerHTML = "获取后台订单信息";
-  getLocationTable();
+  getSeaTableToken();
 
   DoProcess();
 
@@ -504,13 +504,32 @@ span.onclick = function () {
   modal.style.display = "none";
 };
 
-function getLocationTable() {
+function getSeaTableToken() {
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json; charset=utf-8; indent=4",
+      authorization: "Bearer 0ac8d62a73f1283739f8704ad32ce92c06c480ab",
+    },
+  };
+
+  // 将参数附加到 URL
+  const url = "https://cloud.seatable.cn/api/v2.1/dtable/app-access-token/";
+
+  fetch(url, options)
+    .then((response) => response.json())
+    .then((response) => getLocationTable(response))
+    .catch((err) => console.error(err));
+}
+
+function getLocationTable(app_access_token_data) {
+  console.log(app_access_token_data);
+
   const options2 = {
     method: "GET",
     headers: {
       accept: "application/json",
-      authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjQ4Mzc2NTAsImR0YWJsZV91dWlkIjoiNzJlNWQ1Y2UtMjM2MS00ODA1LWIxNjQtZWNiZWUzZDMzMWQzIiwicGVybWlzc2lvbiI6InJ3Iiwib3JnX2lkIjotMSwib3duZXJfaWQiOiJmYzQxZDI2MDljMjY0N2Y0YTc0NDUyNGQwMTlhMTY2N0BhdXRoLmxvY2FsIiwiYXBwX25hbWUiOiJcdTZkNGJcdThiZDUiLCJ1c2VybmFtZSI6IiIsImlkX2luX29yZyI6IiIsInVzZXJfZGVwYXJ0bWVudF9pZHNfbWFwIjp7ImN1cnJlbnRfdXNlcl9kZXBhcnRtZW50X2lkcyI6W10sImN1cnJlbnRfdXNlcl9kZXBhcnRtZW50X2FuZF9zdWJfaWRzIjpbXX19.VQeQ_hbevxGkIrYFUxv9tC6gaRqtfKHrm2O56LQ_nvs",
+      authorization: "Bearer " + app_access_token_data["access_token"],
     },
   };
 
