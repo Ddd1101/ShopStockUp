@@ -1,18 +1,21 @@
 let AppKey = {
   联球制衣厂: "3527689",
   朝雄制衣厂: "4834884",
+  朝瑞制衣厂: "4834884",
   万盈饰品厂: "3527689",
   义乌睿得: "3527689",
 };
 let AppSecret = {
   联球制衣厂: "Zw5KiCjSnL",
   朝雄制衣厂: "JeV4khKJshr",
+  朝瑞制衣厂: "JeV4khKJshr",
   万盈饰品厂: "Zw5KiCjSnL",
   义乌睿得: "Zw5KiCjSnL",
 };
 let access_token = {
   联球制衣厂: "999d182a-3576-4aee-97c5-8eeebce5e085",
   朝雄制衣厂: "ef65f345-7060-4031-98ad-57d7d857f4d9",
+  朝瑞制衣厂: "438de82f-d44f-44f1-b343-4e0721b9e767",
   万盈饰品厂: "cd62b5c5-00d1-41c9-becf-4f9dfcbf4b75",
   义乌睿得: "7f813331-15d6-40a8-97ac-00589efc8e81",
 };
@@ -92,6 +95,8 @@ function FindInMap() {
 
   for (let shopName in orderMap) {
     let orderList = orderMap[shopName];
+    console.log("shopName", shopName);
+    console.log("orderList", orderList);
     for (let order in orderList) {
       let logisticsBillNoList = orderList[order]["logistics"];
       for (let logisticsBillNo of logisticsBillNoList) {
@@ -156,9 +161,9 @@ function GetOrderList() {
 
   let orderstatus = "waitbuyerreceive";
 
-  let shopNameList = ["联球制衣厂", "朝雄制衣厂", "万盈饰品厂"];
+  // let shopNameList = ["联球制衣厂", "朝雄制衣厂", "万盈饰品厂"];
   // let shopNameList = ["联球制衣厂"];
-  // let shopNameList = ["万盈饰品厂"];
+  let shopNameList = ["万盈饰品厂"];
   // let shopNameList = ["义乌睿得"];
 
   let orderListRaw = [];
@@ -188,12 +193,16 @@ function GetTradeList(data, shopName) {
   data["_aop_signature"] = _aop_signature;
 
   let params = new URLSearchParams(data).toString();
+  console.log(data);
+  console.log(params);
 
   const url =
     base_url +
     request_type["trade"] +
     "alibaba.trade.getSellerOrderList/" +
     AppKey[shopName];
+
+  console.log(url);
 
   try {
     setTimeout(() => {
@@ -269,6 +278,8 @@ function OnResponse(responseData, shopName, requestData) {
 function MapOrderId(data, shopName) {
   console.log("MapOrderId");
   orderList = data;
+
+  console.log("orderList", orderList);
 
   orderList.forEach((order) => {
     if (!orderMap[shopName].hasOwnProperty(order["baseInfo"]["idOfStr"])) {
