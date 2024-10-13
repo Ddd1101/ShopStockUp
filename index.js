@@ -30,6 +30,7 @@ let base_url = "https://gw.open.1688.com/openapi/";
 let orderMap = {
   联球制衣厂: {},
   朝雄制衣厂: {},
+  朝瑞制衣厂: {},
   万盈饰品厂: {},
   义乌睿得: {},
 };
