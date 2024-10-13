@@ -95,8 +95,6 @@ function FindInMap() {
 
   for (let shopName in orderMap) {
     let orderList = orderMap[shopName];
-    console.log("shopName", shopName);
-    console.log("orderList", orderList);
     for (let order in orderList) {
       let logisticsBillNoList = orderList[order]["logistics"];
       for (let logisticsBillNo of logisticsBillNoList) {
@@ -161,9 +159,9 @@ function GetOrderList() {
 
   let orderstatus = "waitbuyerreceive";
 
-  // let shopNameList = ["联球制衣厂", "朝雄制衣厂", "万盈饰品厂"];
+  let shopNameList = ["联球制衣厂", "朝雄制衣厂", "万盈饰品厂", "朝瑞制衣厂"];
   // let shopNameList = ["联球制衣厂"];
-  let shopNameList = ["万盈饰品厂"];
+  // let shopNameList = ["万盈饰品厂"];
   // let shopNameList = ["义乌睿得"];
 
   let orderListRaw = [];
@@ -193,16 +191,12 @@ function GetTradeList(data, shopName) {
   data["_aop_signature"] = _aop_signature;
 
   let params = new URLSearchParams(data).toString();
-  console.log(data);
-  console.log(params);
 
   const url =
     base_url +
     request_type["trade"] +
     "alibaba.trade.getSellerOrderList/" +
     AppKey[shopName];
-
-  console.log(url);
 
   try {
     setTimeout(() => {
@@ -278,8 +272,6 @@ function OnResponse(responseData, shopName, requestData) {
 function MapOrderId(data, shopName) {
   console.log("MapOrderId");
   orderList = data;
-
-  console.log("orderList", orderList);
 
   orderList.forEach((order) => {
     if (!orderMap[shopName].hasOwnProperty(order["baseInfo"]["idOfStr"])) {
