@@ -49,10 +49,10 @@ const SHOP_TYPE = {
 // 找到文本输入框
 var input = document.getElementById("logisticsBillNo");
 
-// 添加事件监听器，以确保失去焦点时再次聚焦
-input.addEventListener("blur", function () {
-  input.focus();
-});
+// // 添加事件监听器，以确保失去焦点时再次聚焦
+// input.addEventListener("blur", function () {
+//   input.focus();
+// });
 
 // 自动初始化
 window.onload = function () {
