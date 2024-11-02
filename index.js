@@ -94,6 +94,10 @@ function FindInMap() {
   document.getElementById("deliverId").innerHTML = input.value;
   input.value = "";
 
+  shopType = SHOP_TYPE.CLOTH;
+  companyName = "";
+  let res_list = {};
+
   for (let shopName in orderMap) {
     let orderList = orderMap[shopName];
     for (let order in orderList) {
@@ -101,31 +105,29 @@ function FindInMap() {
       for (let logisticsBillNo of logisticsBillNoList) {
         if (String(logisticsBillNo) == String(gLogisticsBillNo)) {
           isFind = true;
-          shopType = SHOP_TYPE.CLOTH;
+
           if (shopName == "万盈饰品厂") {
             shopType = SHOP_TYPE.JEWELRY;
           }
-          document.getElementById("orderId").innerHTML = order;
 
-          Show(orderList[order]["data"], shopType);
-        }
+          res_list[order] = orderList[order]["data"];
 
-        if (isFind) {
-          break;
+          companyName =
+            orderList[order]["data"]["result"]["baseInfo"]["sellerContact"][
+              "companyName"
+            ];
+
+          // Show(orderList[order]["data"], shopType);
         }
       }
-      if (isFind) {
-        break;
-      }
-    }
-    if (isFind) {
-      break;
     }
   }
 
   if (!isFind) {
     document.getElementById("status").innerHTML = "未查询到，获取后台订单信息";
-    DoProcess();
+    // DoProcess();
+  } else {
+    Show(res_list, shopType, companyName);
   }
 }
 
@@ -346,51 +348,59 @@ function MapLogisticsBillNoAndData(shopName, orderId, data) {
     if (shopName == "万盈饰品厂") {
       shopType = SHOP_TYPE.JEWELRY;
     }
-    Show(data, shopType);
+    // Show(data, shopType);
   }
 }
 
-function Show(data, shopType) {
+function Show(dataJson, shopTye, companyName) {
   document.getElementById("status").innerHTML = "查询完成";
-  document.getElementById("shopName").innerHTML =
-    data["result"]["baseInfo"]["sellerContact"]["companyName"];
+  document.getElementById("shopName").innerHTML = companyName;
 
   formateJson = {};
   var table = document.getElementById("productTable");
 
   let itemsJson = {};
 
-  for (let item of data["result"]["productItems"]) {
-    let cargoNumber = "";
-    if (item.hasOwnProperty("productCargoNumber")) {
-      cargoNumber = item["productCargoNumber"];
-    } else if (item.hasOwnProperty("cargoNumber")) {
-      cargoNumber = item["cargoNumber"];
-    }
-    // 新货号 item 基础信息
-    productCargoNumber = "";
-    if (!itemsJson.hasOwnProperty(cargoNumber)) {
-      itemsJson[cargoNumber] = {
-        name: item["name"],
-        sku: {},
-      };
-    }
-    //sku
-    let color = item["skuInfos"][0]["value"];
-    let size = "无";
-    if (item["skuInfos"].length > 1) {
-      size = item["skuInfos"][1]["value"];
-    }
-    let quantity = item["quantity"];
+  orderIds = "";
 
-    if (!itemsJson[cargoNumber]["sku"].hasOwnProperty(color)) {
-      itemsJson[cargoNumber]["sku"][color] = {
-        size: {},
-        productImgUrl: item["productImgUrl"][1],
-      };
+  for (var key in dataJson) {
+    orderIds += key;
+    console.log(key, dataJson[key]);
+    data = dataJson[key];
+    for (let item of data["result"]["productItems"]) {
+      let cargoNumber = "";
+      if (item.hasOwnProperty("productCargoNumber")) {
+        cargoNumber = item["productCargoNumber"];
+      } else if (item.hasOwnProperty("cargoNumber")) {
+        cargoNumber = item["cargoNumber"];
+      }
+      // 新货号 item 基础信息
+      productCargoNumber = "";
+      if (!itemsJson.hasOwnProperty(cargoNumber)) {
+        itemsJson[cargoNumber] = {
+          name: item["name"],
+          sku: {},
+        };
+      }
+      //sku
+      let color = item["skuInfos"][0]["value"];
+      let size = "无";
+      if (item["skuInfos"].length > 1) {
+        size = item["skuInfos"][1]["value"];
+      }
+      let quantity = item["quantity"];
+
+      if (!itemsJson[cargoNumber]["sku"].hasOwnProperty(color)) {
+        itemsJson[cargoNumber]["sku"][color] = {
+          size: {},
+          productImgUrl: item["productImgUrl"][1],
+        };
+      }
+      itemsJson[cargoNumber]["sku"][color]["size"][size] = quantity;
     }
-    itemsJson[cargoNumber]["sku"][color]["size"][size] = quantity;
   }
+
+  document.getElementById("orderId").innerHTML = orderIds;
 
   for (let itemCargoNumber in itemsJson) {
     let name = itemsJson[itemCargoNumber].name;
@@ -441,10 +451,103 @@ function Show(data, shopType) {
         '" onclick="showImage(this.src)">';
     }
   }
-
-  input.disabled = false;
-  input.focus();
 }
+
+// function Show(data, shopType) {
+//   document.getElementById("status").innerHTML = "查询完成";
+//   document.getElementById("shopName").innerHTML =
+//     data["result"]["baseInfo"]["sellerContact"]["companyName"];
+
+//   formateJson = {};
+//   var table = document.getElementById("productTable");
+
+//   let itemsJson = {};
+
+//   for (let item of data["result"]["productItems"]) {
+//     let cargoNumber = "";
+//     if (item.hasOwnProperty("productCargoNumber")) {
+//       cargoNumber = item["productCargoNumber"];
+//     } else if (item.hasOwnProperty("cargoNumber")) {
+//       cargoNumber = item["cargoNumber"];
+//     }
+//     // 新货号 item 基础信息
+//     productCargoNumber = "";
+//     if (!itemsJson.hasOwnProperty(cargoNumber)) {
+//       itemsJson[cargoNumber] = {
+//         name: item["name"],
+//         sku: {},
+//       };
+//     }
+//     //sku
+//     let color = item["skuInfos"][0]["value"];
+//     let size = "无";
+//     if (item["skuInfos"].length > 1) {
+//       size = item["skuInfos"][1]["value"];
+//     }
+//     let quantity = item["quantity"];
+
+//     if (!itemsJson[cargoNumber]["sku"].hasOwnProperty(color)) {
+//       itemsJson[cargoNumber]["sku"][color] = {
+//         size: {},
+//         productImgUrl: item["productImgUrl"][1],
+//       };
+//     }
+//     itemsJson[cargoNumber]["sku"][color]["size"][size] = quantity;
+//   }
+
+//   for (let itemCargoNumber in itemsJson) {
+//     let name = itemsJson[itemCargoNumber].name;
+//     for (let color in itemsJson[itemCargoNumber]["sku"]) {
+//       let imgUrl = itemsJson[itemCargoNumber]["sku"][color].productImgUrl;
+//       // size
+//       let sizeStr = "";
+//       let isFirst = true;
+//       let sizeList = itemsJson[itemCargoNumber]["sku"][color]["size"];
+//       // 提取JSON对象的键并进行排序
+//       let sortedSize = Object.keys(sizeList).sort();
+//       // 根据排序后的键重新构建JSON对象
+//       let sortedSizeJson = {};
+//       sortedSize.forEach((key) => {
+//         sortedSizeJson[key] = sizeList[key];
+//       });
+//       // 打印排序后的JSON对象
+//       for (let size in sortedSizeJson) {
+//         if (isFirst != true) {
+//           sizeStr += "<br>";
+//         }
+//         isFirst = false;
+//         sizeStr +=
+//           size +
+//           "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+//           itemsJson[itemCargoNumber]["sku"][color]["size"][size] +
+//           "&nbsp;件";
+//       }
+//       let row = table.insertRow();
+//       let nameCell = row.insertCell(0);
+//       let locationCell = row.insertCell(1);
+//       let colorCell = row.insertCell(2);
+//       colorCell.style.whiteSpace = "nowrap";
+//       let sizeCell = row.insertCell(3);
+//       sizeCell.style.whiteSpace = "nowrap";
+
+//       let imgcell = row.insertCell(4);
+//       nameCell.innerHTML = itemCargoNumber;
+//       locationCell.innerHTML = getLocation(itemCargoNumber, shopType);
+//       colorCell.innerHTML = color;
+//       sizeCell.innerHTML = sizeStr;
+//       var imgUrlFixed = imgUrl.replace(/^http:\/\//i, "https://");
+//       imgcell.innerHTML =
+//         '<img src="' +
+//         imgUrlFixed +
+//         '" alt="' +
+//         name +
+//         '" onclick="showImage(this.src)">';
+//     }
+//   }
+
+//   input.disabled = false;
+//   input.focus();
+// }
 
 function CalculateSignature(urlPath, data, shopName) {
   // 构造签名因子：urlPath
@@ -479,6 +582,7 @@ function Clean() {
 
 function Clean2() {
   console.log("Clean2");
+  res_list = [];
   document.getElementById("orderId").innerHTML = "";
 
   var table = document.getElementById("productTable");
