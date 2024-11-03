@@ -15,6 +15,7 @@
     
 
     <style>
+        
         table, th, td {
             border: 1px solid black;
             border-collapse: collapse;
@@ -63,6 +64,8 @@
             font-weight: bold;
             cursor: pointer;
         }
+
+        
     </style>
     
 </head>
@@ -76,8 +79,12 @@
 
     <p>查询状态: <span id="status"></span></p>
 
-    <p>快递单号: <span id="deliverId"></span></p>
-    <p>订单编号: <span id="orderId"></span></p>
+    <p>快递单号: <span id="deliverId"></span>&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="copyDeliverId()" style="font-size:15px;display: inline;">复制</button></p>
+    
+    <p>订单编号: <span id="orderId"></span>&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="copyOrderId()" style="font-size:15px;display: inline;">复制</button>
+    </p>
+    <!-- <p>快递单号: <span id="deliverId"></span></p>
+    <p>订单编号: <span id="orderId"></span></p> -->
     <p>所属店铺: <span id="shopName"></span></p>
 
     <div id="myModal" class="modal">

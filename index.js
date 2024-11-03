@@ -49,10 +49,10 @@ const SHOP_TYPE = {
 // 找到文本输入框
 var input = document.getElementById("logisticsBillNo");
 
-// // 添加事件监听器，以确保失去焦点时再次聚焦
-// input.addEventListener("blur", function () {
-//   input.focus();
-// });
+// 添加事件监听器，以确保失去焦点时再次聚焦
+input.addEventListener("blur", function () {
+  input.focus();
+});
 
 // 自动初始化
 window.onload = function () {
@@ -126,6 +126,8 @@ function FindInMap() {
   if (!isFind) {
     document.getElementById("status").innerHTML = "未查询到，获取后台订单信息";
     // DoProcess();
+    input.disabled = false;
+    input.focus();
   } else {
     Show(res_list, shopType, companyName);
   }
@@ -352,7 +354,7 @@ function MapLogisticsBillNoAndData(shopName, orderId, data) {
   }
 }
 
-function Show(dataJson, shopTye, companyName) {
+function Show(dataJson, shopType, companyName) {
   document.getElementById("status").innerHTML = "查询完成";
   document.getElementById("shopName").innerHTML = companyName;
 
@@ -451,6 +453,8 @@ function Show(dataJson, shopTye, companyName) {
         '" onclick="showImage(this.src)">';
     }
   }
+  input.disabled = false;
+  input.focus();
 }
 
 // function Show(data, shopType) {
@@ -681,4 +685,56 @@ function getLocation(cargoNumber, shopType) {
     return "未找到对应商户";
   }
   return locationMap["万盈饰品厂"][cargoNumber];
+}
+
+function copyDeliverId() {
+  // 获取<span>元素下的内容
+  var text = document.getElementById("deliverId").innerText;
+
+  // 创建一个临时的<textarea>元素用于复制文本
+  var tempInput = document.createElement("textarea");
+  tempInput.value = text;
+  document.body.appendChild(tempInput);
+
+  // 选择文本
+  tempInput.select();
+
+  // 使用Clipboard API写入剪贴板
+  navigator.clipboard
+    .writeText(text)
+    .then(function () {
+      alert("已成功复制到剪贴板: " + text);
+    })
+    .catch(function (err) {
+      console.error("复制失败: ", err);
+    });
+
+  // 移除临时<textarea>元素
+  document.body.removeChild(tempInput);
+}
+
+function copyOrderId() {
+  // 获取<span>元素下的内容
+  var text = document.getElementById("orderId").innerText;
+
+  // 创建一个临时的<textarea>元素用于复制文本
+  var tempInput = document.createElement("textarea");
+  tempInput.value = text;
+  document.body.appendChild(tempInput);
+
+  // 选择文本
+  tempInput.select();
+
+  // 使用Clipboard API写入剪贴板
+  navigator.clipboard
+    .writeText(text)
+    .then(function () {
+      alert("已成功复制到剪贴板: " + text);
+    })
+    .catch(function (err) {
+      console.error("复制失败: ", err);
+    });
+
+  // 移除临时<textarea>元素
+  document.body.removeChild(tempInput);
 }
