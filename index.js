@@ -46,6 +46,10 @@ const SHOP_TYPE = {
   JEWELRY: 1,
 };
 
+let gShopCalCounter = 0;
+
+let shopNameList = ["联球制衣厂", "朝雄制衣厂", "万盈饰品厂", "朝瑞制衣厂"];
+
 // 找到文本输入框
 var input = document.getElementById("logisticsBillNo");
 
@@ -60,11 +64,6 @@ window.onload = function () {
   getSeaTableToken();
 
   DoProcess();
-
-  document.getElementById("status").innerHTML = "等待查询";
-
-  // input.disabled = false;
-  input.focus();
 };
 
 let gLogisticsBillNo = "";
@@ -84,7 +83,7 @@ input.addEventListener("keyup", function (event) {
 function FindInMap() {
   Clean2();
 
-  // input.disabled = true;
+  input.disabled = true;
 
   document.getElementById("status").innerHTML = "订单信息查询中。。。";
 
@@ -122,6 +121,7 @@ function FindInMap() {
       }
     }
   }
+  input.disabled = false;
 
   if (!isFind) {
     document.getElementById("status").innerHTML = "未查询到，获取后台订单信息";
@@ -135,15 +135,12 @@ function FindInMap() {
 
 function DoProcess() {
   console.log("DoProcess");
+  input.disabled = true;
   Clean2();
   // input.disabled = true;
   // 1. 获取订单id & 获取对应的物流单号 & 存储
+  document.getElementById("status").innerHTML = "后台数据准备中";
   GetOrderList();
-
-  document.getElementById("status").innerHTML = "未查询到，此单无法查询";
-
-  // input.disabled = false;
-  input.focus();
 }
 
 function GetOrderList() {
@@ -164,7 +161,6 @@ function GetOrderList() {
 
   let orderstatus = "waitbuyerreceive";
 
-  let shopNameList = ["联球制衣厂", "朝雄制衣厂", "万盈饰品厂", "朝瑞制衣厂"];
   // let shopNameList = ["联球制衣厂"];
   // let shopNameList = ["万盈饰品厂"];
   // let shopNameList = ["义乌睿得"];
@@ -285,6 +281,17 @@ function MapOrderId(data, shopName) {
       GetTradeData(_orderId, shopName);
     }
   });
+
+  console.log("end " + shopName + " Getlist");
+  gShopCalCounter += 1;
+  if (gShopCalCounter == shopNameList.length) {
+    input.disabled = false;
+    document.getElementById("status").innerHTML = "等待查询";
+
+    input.focus();
+    console.log("get all shop  order list finish");
+  }
+  input.focus();
 }
 
 function GetTradeData(orderId, shopName) {
