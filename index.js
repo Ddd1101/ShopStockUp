@@ -124,9 +124,8 @@ function FindInMap() {
   input.disabled = false;
 
   if (!isFind) {
-    document.getElementById("status").innerHTML = "未查询到，获取后台订单信息";
-    // DoProcess();
-    // input.disabled = false;
+    document.getElementById("status").innerHTML =
+      "未查询到对应订单，请刷新页面";
     input.focus();
   } else {
     Show(res_list, shopType, companyName);
@@ -137,7 +136,6 @@ function DoProcess() {
   console.log("DoProcess");
   input.disabled = true;
   Clean2();
-  // input.disabled = true;
   // 1. 获取订单id & 获取对应的物流单号 & 存储
   document.getElementById("status").innerHTML = "后台数据准备中";
   GetOrderList();
@@ -160,11 +158,6 @@ function GetOrderList() {
   var endTime = endYear + endMonth + endDay + "000000000+0800";
 
   let orderstatus = "waitbuyerreceive";
-
-  // let shopNameList = ["联球制衣厂"];
-  // let shopNameList = ["万盈饰品厂"];
-  // let shopNameList = ["义乌睿得"];
-
   let orderListRaw = [];
 
   shopNameList.forEach((shopName) => {
