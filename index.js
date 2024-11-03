@@ -63,7 +63,7 @@ window.onload = function () {
 
   document.getElementById("status").innerHTML = "等待查询";
 
-  input.disabled = false;
+  // input.disabled = false;
   input.focus();
 };
 
@@ -84,7 +84,7 @@ input.addEventListener("keyup", function (event) {
 function FindInMap() {
   Clean2();
 
-  input.disabled = true;
+  // input.disabled = true;
 
   document.getElementById("status").innerHTML = "订单信息查询中。。。";
 
@@ -126,7 +126,7 @@ function FindInMap() {
   if (!isFind) {
     document.getElementById("status").innerHTML = "未查询到，获取后台订单信息";
     // DoProcess();
-    input.disabled = false;
+    // input.disabled = false;
     input.focus();
   } else {
     Show(res_list, shopType, companyName);
@@ -136,13 +136,13 @@ function FindInMap() {
 function DoProcess() {
   console.log("DoProcess");
   Clean2();
-  input.disabled = true;
+  // input.disabled = true;
   // 1. 获取订单id & 获取对应的物流单号 & 存储
   GetOrderList();
 
   document.getElementById("status").innerHTML = "未查询到，此单无法查询";
 
-  input.disabled = false;
+  // input.disabled = false;
   input.focus();
 }
 
@@ -453,7 +453,7 @@ function Show(dataJson, shopType, companyName) {
         '" onclick="showImage(this.src)">';
     }
   }
-  input.disabled = false;
+  // input.disabled = false;
   input.focus();
 }
 
