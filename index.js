@@ -617,11 +617,13 @@ span.onclick = function () {
 };
 
 function getSeaTableToken() {
+  console.log("call getSeaTableToken()");
+
   const options = {
     method: "GET",
     headers: {
       accept: "application/json; charset=utf-8; indent=4",
-      authorization: "Bearer 0ac8d62a73f1283739f8704ad32ce92c06c480ab",
+      authorization: "Bearer efeb234da00a165544321cf6103c6e7c5bc141ec",
     },
   };
 
@@ -635,6 +637,7 @@ function getSeaTableToken() {
 }
 
 function getLocationTable(app_access_token_data) {
+  console.log("call getLocationTable()");
   console.log(app_access_token_data);
 
   const options2 = {
@@ -646,11 +649,13 @@ function getLocationTable(app_access_token_data) {
   };
 
   const params = new URLSearchParams({
-    table_name: "货架-A",
+    table_name: "Sheet1",
   });
 
   // 将参数附加到 URL
-  const url = `https://dtable-server.seatable.cn/api/v1/dtables/72e5d5ce-2361-4805-b164-ecbee3d331d3/rows/?${params.toString()}`;
+  const url = `${
+    app_access_token_data["dtable_server"]
+  }api/v1/dtables/7ed176aa-7857-4698-a2e7-824d1420f1d0/rows/?${params.toString()}`;
 
   fetch(url, options2)
     .then((response) => response.json())
@@ -659,25 +664,25 @@ function getLocationTable(app_access_token_data) {
 }
 
 function getLocationTableCallBack(response) {
+  console.log("call getLocationTableCallBack()");
   location_table = response;
-  // console.log(location_table);
-  // console.log(location_table["rows"]);
-  for (let i = 0; i < location_table["rows"].length; i++) {
-    for (let j = 1; j <= 10; j++) {
-      if (location_table["rows"][i][j + "号仓"] != null) {
-        let cargoNumberRaw = location_table["rows"][i][j + "号仓"];
-        // 库存为空
-        let cargoNumberStrList = cargoNumberRaw.split("-");
-        let cargoNumber = cargoNumberStrList[0];
-        locationMap["万盈饰品厂"][cargoNumber] =
-          location_table["rows"][i]["表头"] + "-" + j + "号仓";
+  console.log(location_table);
+  // for (let i = 0; i < location_table["rows"].length; i++) {
+  //   for (let j = 1; j <= 10; j++) {
+  //     if (location_table["rows"][i][j + "号仓"] != null) {
+  //       let cargoNumberRaw = location_table["rows"][i][j + "号仓"];
+  //       // 库存为空
+  //       let cargoNumberStrList = cargoNumberRaw.split("-");
+  //       let cargoNumber = cargoNumberStrList[0];
+  //       locationMap["万盈饰品厂"][cargoNumber] =
+  //         location_table["rows"][i]["表头"] + "-" + j + "号仓";
 
-        if (cargoNumberStrList.length > 1 && cargoNumberStrList[1] == "0") {
-          locationMap["万盈饰品厂"][cargoNumber] += " 无库存";
-        }
-      }
-    }
-  }
+  //       if (cargoNumberStrList.length > 1 && cargoNumberStrList[1] == "0") {
+  //         locationMap["万盈饰品厂"][cargoNumber] += " 无库存";
+  //       }
+  //     }
+  //   }
+  // }
 }
 
 function getLocation(cargoNumber, shopType) {
@@ -738,3 +743,73 @@ function copyOrderId() {
   // 移除临时<textarea>元素
   document.body.removeChild(tempInput);
 }
+
+// function getSeaTableToken() {
+//   console.log("call getSeaTableToken()");
+
+//   const url = "https://cloud.seatable.cn/api/v2.1/dtable/app-access-token/";
+
+//   request({
+//     url: url,
+//     method: "GET",
+//     header: {
+//       accept: "application/json; charset=utf-8; indent=4",
+//       authorization: "Bearer 0ac8d62a73f1283739f8704ad32ce92c06c480ab",
+//     },
+//     success: function (response) {
+//       getLocationTable(response.data);
+//     },
+//     fail: function (error) {
+//       console.error("hgx", "getSeaTableToken error", error);
+//     },
+//   });
+// }
+
+// function getLocationTable(app_access_token_data) {
+//   console.log("call getLocationTable");
+
+//   const params = toQueryString({
+//     table_name: "货架-A",
+//   });
+
+//   // 将参数附加到 URL
+//   const url = `${
+//     app_access_token_data["dtable_server"]
+//   }api/v1/dtables/72e5d5ce-2361-4805-b164-ecbee3d331d3/rows/?${params.toString()}`;
+
+//   request({
+//     url: url,
+//     method: "GET",
+//     header: {
+//       accept: "application/json",
+//       authorization: "Bearer " + app_access_token_data["access_token"],
+//     },
+//     success: function (response) {
+//       getLocationTableCallBack(response);
+//     },
+//     fail: function (error) {
+//       console.error("hgx", "getLocationTable error", error);
+//     },
+//   });
+// }
+
+// function getLocationTableCallBack(response) {
+//   console.log("call getLocationTableCallBack");
+//   location_table = response.data;
+//   for (let i = 0; i < location_table["rows"].length; i++) {
+//     for (let j = 1; j <= 10; j++) {
+//       if (location_table["rows"][i][j + "号仓"] != null) {
+//         let cargoNumberRaw = location_table["rows"][i][j + "号仓"];
+//         // 库存为空
+//         let cargoNumberStrList = cargoNumberRaw.split("=");
+//         let cargoNumber = cargoNumberStrList[0];
+//         locationMap["万盈饰品厂"][cargoNumber] =
+//           location_table["rows"][i]["表头"] + "-" + j + "号仓";
+
+//         if (cargoNumberStrList.length > 1 && cargoNumberStrList[1] == "0") {
+//           locationMap["万盈饰品厂"][cargoNumber] += " 无库存";
+//         }
+//       }
+//     }
+//   }
+// }
