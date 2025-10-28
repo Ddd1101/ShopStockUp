@@ -299,7 +299,9 @@ function GetTradeData(orderId, shopName) {
 
   data["access_token"] = access_token[shopName];
   const _aop_signature = CalculateSignature(
-    request_type["trade"] + "alibaba.trade.get.sellerView/" + AppKey[shopName],
+    request_type["trade"] +
+      "alibaba.trade.ec.getOrder.sellerView/" +
+      AppKey[shopName],
     data,
     shopName
   );
@@ -310,8 +312,10 @@ function GetTradeData(orderId, shopName) {
   const url =
     base_url +
     request_type["trade"] +
-    "alibaba.trade.get.sellerView/" +
+    "alibaba.trade.ec.getOrder.sellerView/" +
     AppKey[shopName];
+
+  console.log(url);
 
   try {
     setTimeout(() => {
